@@ -52,13 +52,15 @@ export default function Candidates() {
     return (
       <div className="p-4 flex flex-col items-center justify-center min-h-screen">
         <h1 className="text-2xl font-bold mb-6">Twin Minds con {user?.name}</h1>
-  
-        <div className="w-full max-w-sm bg-white shadow-lg rounded-xl overflow-hidden">
+        <div className="w-full max-w-sm bg-white shadow-lg rounded-xl overflow-hidden relative">
           <img
             src="https://cdn.dribbble.com/userupload/21906345/file/original-01df5921dd2bc745b56cc6e46326ee08.png?resize=752x564&vertical=center"
             alt="Foto de perfil"
             className="w-full h-64 object-cover"
           />
+          <div className="absolute top-2 right-2 bg-yellow-400 text-white rounded-full w-10 h-10 flex items-center justify-center text-sm font-bold shadow-md">
+            {candidate.score}
+          </div>
           <div className="p-4">
             <h2 className="text-xl font-semibold">
               {candidate.name}, {candidate.age}
