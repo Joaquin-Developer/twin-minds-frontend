@@ -21,4 +21,10 @@ export default class APIService {
         })
         return await res.json();
     }
+
+    static async getMetadata() {
+        const url = `${API_URL}/metadata`;
+        const res = await fetch(url);
+        return await res.json();
+    }
 }
