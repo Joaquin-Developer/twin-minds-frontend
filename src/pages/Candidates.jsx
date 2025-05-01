@@ -17,5 +17,5 @@ export default function Candidates() {
         <h1 className="text-2xl font-bold">Bienvenido, {user?.name}</h1>
       </div>
     );
-  }
+}
   
