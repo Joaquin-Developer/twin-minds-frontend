@@ -27,7 +27,12 @@ export default function Candidates() {
       // TODO send like
       setCurrentIndex((prev) => prev + 1);
     };
-  
+
+    const handlePass = () => {
+      // TODO implement this handler
+      setCurrentIndex((prev) => prev + 1);
+    };
+
     const handleDislike = () => {
       // TODO send dislike
       setCurrentIndex((prev) => prev + 1);
@@ -74,7 +79,7 @@ export default function Candidates() {
               ❌ Dislike
             </button>
             <button
-              onClick={() => setCurrentIndex((prev) => prev + 1)}
+              onClick={handlePass}
               className="bg-gray-400 text-white px-4 py-2 rounded-full hover:bg-gray-500"
             >
               Pass

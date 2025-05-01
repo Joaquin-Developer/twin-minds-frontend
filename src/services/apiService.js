@@ -6,10 +6,14 @@ export default class APIService {
     static async mailExists(mail) {
         const url = `${API_URL}/users/mail-exists/${mail}`;
         const res = await fetch(url);
-        const data = await res.json();
-        const exists = data.exists;
-        console.log(exists ? "Email already exists" : "Email not exists")
-        return exists;
+
+        if (res.status == 404) {
+            console.log("Email not exists");
+            return null;
+        }
+
+        console.log("Login!");
+        return await res.json();
     }
 
     static async createNewUser(userData) {
