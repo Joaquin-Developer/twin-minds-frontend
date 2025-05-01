@@ -34,15 +34,17 @@ export default function RegisterForm() {
   const navigate = useNavigate();
 
   const checkEmail = async () => {
+    // TODO improve this validations!
     if (email.indexOf("@") === -1 || email.indexOf(".com") === -1) {
       alert("Email invalido");
       setEmail("");
       return;
     }
-    const exists = await APIService.mailExists(email);
+    const user = await APIService.mailExists(email);
 
-    if (exists) {
+    if (user) {
       navigate("/candidates");
+      localStorage.setItem("user", JSON.stringify(user));
     } else {
       setStep("createUser");
     }
