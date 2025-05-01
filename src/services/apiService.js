@@ -27,4 +27,10 @@ export default class APIService {
         const res = await fetch(url);
         return await res.json();
     }
+
+    static async getCandidatesData(userId) {
+        const url = `${API_URL}/candidates/generate/${userId}`;
+        const res = await fetch(url);
+        return await res.json();
+    }
 }
