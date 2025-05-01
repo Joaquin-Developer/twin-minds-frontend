@@ -1,47 +1,62 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import APIService from "../services/apiService";
+
 
 export default function RegisterForm() {
+  const [step, setStep] = useState("checkEmail");
   const [email, setEmail] = useState("");
-  const [emailChecked, setEmailChecked] = useState(false);
-  const [emailExists, setEmailExists] = useState(false);
+
   const [userData, setUserData] = useState({
     name: "",
-    password: "",
     age: "",
+    personality: "",
+    interests: []
   });
   const navigate = useNavigate();
 
   const checkEmail = async () => {
-    // const res = await fetch(`/api/users/check-email?email=${email}`);
-    // const data = await res.json();
-    // setEmailExists(data.exists);
-    setEmailChecked(true);
+    if (email.indexOf("@") === -1 || email.indexOf(".com") === -1) {
+      alert("Email invalido");
+      setEmail("");
+      return;
+    }
+    const exists = await APIService.mailExists(email);
+
+    if (exists) {
+      navigate("/candidates");
+    } else {
+      setStep("createUser");
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // const res = await fetch("/api/users", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({ email, ...userData }),
-    // });
-    // const newUser = await res.json();
-    // localStorage.setItem("user", JSON.stringify(newUser));
-    navigate("/candidates");
+
+    const payload = {
+      email,
+      ...userData
+    };
+    const newUser = await APIService.createNewUser(payload);
+
+    localStorage.setItem("user", JSON.stringify(newUser));
+    navigate("/candidates");    
   };
 
   return (
     <div className="max-w-md mx-auto mt-10 p-4 shadow-lg rounded-xl bg-white">
-      <h2 className="text-xl font-semibold mb-4">Registro</h2>
+      <h2 className="text-xl font-semibold mb-4">
+        {step === "checkEmail" ? "Validación de perfil" : "Crear perfil"}
+      </h2>
 
-      {!emailChecked ? (
+     {step === "checkEmail" && (
         <div className="flex flex-col gap-2">
           <label>Email:</label>
           <input
             type="email"
             className="border p-2 rounded"
             value={email}
+            required
             onChange={(e) => setEmail(e.target.value)}
           />
           <button
@@ -51,9 +66,8 @@ export default function RegisterForm() {
             Verificar Email
           </button>
         </div>
-      ) : emailExists ? (
-        <p className="text-red-600">Este email ya está registrado.</p>
-      ) : (
+      )} 
+      {step === "createUser" && (
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
           <label>
             Nombre:
@@ -70,7 +84,7 @@ export default function RegisterForm() {
               type="number"
               className="border p-2 rounded w-full"
               value={userData.age}
-              onChange={(e) => setUserData({ ...userData, age: e.target.value })}
+              onChange={(e) => setUserData({ ...userData, age: parseInt(e.target.value) })}
             />
           </label>
           <label>
